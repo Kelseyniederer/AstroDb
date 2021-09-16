@@ -43,17 +43,12 @@ function actorArray(actors){
 
 function getMovie(){
     let movieId = sessionStorage.getItem('movieId');
-
     axios.get('https://www.omdbapi.com/?i=' + movieId + '&apikey=104aab75')
     .then((response) => {
         console.log(response);
         let movie = response.data;
         let actorsArray = actorArray(movie.Actors);
-        let actorsHTML = "";
-        // for (let i=0; i<actorsArray.length; i++){
-        //     actorsHTML.push(`<li class="list-group-item>${actorsArray[i]}</li>`)
-        // }
-        
+        let actorsHTML = ""; 
         $.each(actorsArray, (index, actor) => {
             actorsHTML += `
             <li>${actor}</li>`
@@ -93,4 +88,17 @@ function getMovie(){
     .catch((err) => {
         console.log(err);
     });
-}
+
+    let name = 'Judy Garland'
+    $.ajax({
+        method: 'GET',
+        url: 'https://api.api-ninjas.com/v1/celebrity?name=' + name,
+        headers: { 'X-Api-Key': 'AvOi9MMKRkh6OSfbo1uT0Q==2QerQRsKXBfPY5bk'},
+        contentType: 'application/json',
+        success: function(result) {
+            console.log(result);
+        },
+        error: function ajaxError(jqXHR) {
+            console.error('Error: ', jqXHR.responseText);
+        }
+    });}
