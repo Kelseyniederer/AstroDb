@@ -3,6 +3,7 @@ $(document).ready(() => {
         let searchText = $('#searchText').val();
         getMovies(searchText);
         event.preventDefault();
+
     });
 });
 
@@ -41,6 +42,10 @@ function actorArray(actors){
    return actors.split(',');
 }
 
+function getBirthday(){
+    // use Google search API to find actor's birthday in form of ["month", day, year];
+};
+
 function getMovie(){
     let movieId = sessionStorage.getItem('movieId');
     axios.get('https://www.omdbapi.com/?i=' + movieId + '&apikey=104aab75')
@@ -50,6 +55,15 @@ function getMovie(){
         let actorsArray = actorArray(movie.Actors);
         let actorsHTML = ""; 
         $.each(actorsArray, (index, actor) => {
+            let actorQuery = actor.trim().replace(' ', '+').replace(' ', '+').replace(' ', '+').replace(' ', '+').replace(' ', '+');
+            
+            let url = 'http://api.serpstack.com/search?access_key=da87b6e9cacb0ab88053a97e2c24673f&query=' + actorQuery + '+birthday';
+
+            $.get(url, function(data){
+                console.log(url)
+                console.log(data)
+            });
+
             actorsHTML += `
             <li>${actor}</li>`
         })
@@ -72,7 +86,7 @@ function getMovie(){
         </div>
         <div class="row">
             <div class="well">
-                <h3>Plot</h3>
+               
                 ${movie.Plot}
                 <hr>
                 <a href="http://imdb.com/title/${movie.imdbID}" target="blank" class="btn btn-primary">View IMDb></a>
@@ -89,16 +103,4 @@ function getMovie(){
         console.log(err);
     });
 
-    let name = 'Judy Garland'
-    $.ajax({
-        method: 'GET',
-        url: 'https://api.api-ninjas.com/v1/celebrity?name=' + name,
-        headers: { 'X-Api-Key': 'AvOi9MMKRkh6OSfbo1uT0Q==2QerQRsKXBfPY5bk'},
-        contentType: 'application/json',
-        success: function(result) {
-            console.log(result);
-        },
-        error: function ajaxError(jqXHR) {
-            console.error('Error: ', jqXHR.responseText);
-        }
-    });}
+}
